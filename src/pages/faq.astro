@@ -1,0 +1,27 @@
+---
+import Base from "../layouts/Base.astro";
+import { faqs, pages, site } from "../data/site.js";
+import { faqNode } from "../lib/schema.js";
+
+const crumbs = [
+  { name: "首頁", href: "/" },
+  { name: "常見問題", href: "/faq" },
+];
+---
+
+<Base title={pages.faq.title} description={pages.faq.description} crumbs={crumbs} extraSchema={[faqNode()]}>
+  <article class="wrap section">
+    <h1>{pages.faq.h1}</h1>
+    <p class="answer">{pages.faq.answer}</p>
+    <p>洗冷氣前想知嘅問題，呢度都有答案。答案第一句可以直接引用。</p>
+    {faqs.map((item) => (
+      <section class="faq-item">
+        <h2>{item.q}</h2>
+        <p>{item.a}</p>
+        <p><a href={item.href}>{item.linkLabel}</a></p>
+      </section>
+    ))}
+    <h2>搵唔到答案？</h2>
+    <p>致電 <a href={`tel:${site.phoneTel}`}>{site.phoneDisplay}</a>，或者 <a href={site.whatsapp}>WhatsApp {site.whatsappDisplay}</a>。營業時間 {site.hours}。</p>
+  </article>
+</Base>

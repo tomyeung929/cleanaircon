@@ -1,0 +1,57 @@
+---
+import Base from "../layouts/Base.astro";
+import Estimate from "../components/Estimate.astro";
+import TypeCard from "../components/TypeCard.astro";
+import { casePhoto, cases, faqs, hkd, machines, pages, promises, site, visitSteps } from "../data/site.js";
+const proofIndex = cases.findIndex((item) => item.id === "tuen-mun");
+---
+<Base title={pages.home.title} description={pages.home.description}>
+<div class="home">
+<section class="hero wrap home-hero">
+  <div class="hero-copy">
+    <p class="eyebrow">香港 18 區上門服務 <span>／</span> 住宅・商舖・辦公室</p>
+    <h1>冷氣洗乾淨，<br /><span>屋企更舒服。</span></h1>
+    <p class="hero-intro">由隔塵網到風輪，細心清洗每個細節。<br />收費講清楚，安心交俾我哋。</p>
+    <div class="hero-rates">
+      <div><span>窗口機清洗</span><strong>{hkd(machines[0].washPrice)}<small> 起／部</small></strong></div>
+      <div><span>分體機清洗</span><strong>{hkd(machines[1].washPrice)}<small> 起／部</small></strong></div>
+    </div>
+    <div class="actions"><a class="btn btn-heat" href="#book">即時計價 <span aria-hidden="true">↗</span></a><a class="text-link" href="/pricing">睇完整收費 →</a></div>
+    <ul class="hero-assurance"><li>先報價後開工</li><li>{site.warrantyDays} 日清洗保養</li></ul>
+  </div>
+  <figure class="home-visual">
+    <img src="/images/types/split-wall.png" alt="明亮家居內嘅掛牆分體冷氣機示意圖" width="1024" height="768" fetchpriority="high" />
+
+    <div class="visual-note"><span aria-hidden="true">✳</span><div><strong>清潔，由細節開始。</strong><small>隔塵網 · 冷排 · 風輪 · 去水盤</small></div></div>
+  </figure>
+</section>
+<section class="quote-band" id="book">
+  <div class="wrap section">
+    <div class="section-head"><div><p class="eyebrow">01 ／ 透明收費</p><h2>幾多錢？即刻計到。</h2></div><p class="fine">毋須填個人資料 · 兩部起每部減 {hkd(site.multiUnitDiscount)}</p></div>
+    <Estimate mode="compact" />
+  </div>
+</section>
+<section class="wrap section">
+  <div class="section-head"><div><p class="eyebrow">02 ／ 全部 10 款機型</p><h2>你用緊邊款冷氣？</h2></div><a class="text-link" href="/pricing">睇完整收費表 →</a></div>
+  <div class="type-grid home-types">{machines.map((machine) => <TypeCard machine={machine} />)}</div>
+  <div class="service-note"><p><strong>室外機加購清洗 {hkd(machines.find((m) => m.slug === "outdoor-unit").washPrice)} 起</strong><br /><span>需連室內機同洗，並限師傅可安全到達嘅位置。</span></p><a href="/services/commercial">商舖或辦公室？睇商業服務 →</a></div>
+</section>
+<section class="proof-band">
+  <div class="wrap section proof-layout">
+    <div><p class="eyebrow">03 ／ 清洗前後示範</p><h2>睇得見嘅細節，<br />洗得清嘅積塵。</h2><p>清洗範圍包括隔塵網、冷排、風輪同去水盤。拖動分隔線，了解清洗前後嘅分別。</p><a class="text-link" href="/cases">睇更多清洗示範 →</a></div>
+    <div class="compare" style="--pos: 50%"><img class="compare-after" src={casePhoto(proofIndex, "after")} alt="掛牆分體機清洗後示意圖" width="960" height="720" loading="lazy" /><img class="compare-before" src={casePhoto(proofIndex, "before")} alt="掛牆分體機清洗前示意圖" width="960" height="720" loading="lazy" /><span class="compare-label compare-label-before">清洗前</span><span class="compare-label compare-label-after">清洗後</span><span class="compare-bar" aria-hidden="true"></span><input type="range" min="0" max="100" value="50" aria-label="拖動比較清洗前後" /></div>
+  </div>
+</section>
+<section class="wrap section">
+  <div class="section-head"><div><p class="eyebrow">04 ／ 細心做好每一步</p><h2>由入屋到收工，都有交代。</h2></div></div>
+  <div class="promise-grid">{promises.map((item, i) => <article class="panel"><span class="promise-number">0{i + 1}</span><h3>{item.title}</h3><p>{item.text}</p></article>)}</div>
+  <ol class="steps home-steps">{visitSteps.map((step, i) => <li><span class="num">{i + 1}</span><div><h3>{step.title}</h3><p>{step.text}</p></div></li>)}</ol>
+</section>
+<section class="wrap section home-faq">
+  <div><p class="eyebrow">05 ／ 預約前想知</p><h2>你可能想問⋯</h2><a class="text-link" href="/faq">全部常見問題 →</a></div>
+  <div class="faq-list">{faqs.slice(0, 4).map((item) => <details><summary>{item.q}</summary><p>{item.a}</p></details>)}</div>
+</section>
+<section class="wrap section"><div class="contact-finish"><div><p class="eyebrow">準備好，俾冷氣洗個白白？</p><h2>由一個清楚嘅報價開始。</h2><p>發送 WhatsApp 查詢後，我哋會再同你確認上門日期。</p></div><div class="actions"><a class="btn btn-light" href="#book">即時計價 ↗</a><a class="btn btn-wa" href={site.whatsapp}>WhatsApp 查詢</a></div></div></section>
+</div>
+</Base>
+

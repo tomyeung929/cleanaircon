@@ -1,0 +1,68 @@
+---
+import Base from "../../layouts/Base.astro";
+import Estimate from "../../components/Estimate.astro";
+import TypeCard from "../../components/TypeCard.astro";
+import { casesForMachine, cleanSteps, findMachine, machineMeta, machines, quotedSeparately, repairIncludes, site, washIncludes } from "../../data/site.js";
+import { offersFor } from "../../lib/schema.js";
+
+export function getStaticPaths() {
+  return machines.map((machine) => ({ params: { slug: machine.slug } }));
+}
+
+const { slug } = Astro.params;
+const machine = findMachine(slug);
+const meta = machineMeta(machine);
+const related = casesForMachine(machine.slug);
+const crumbs = [
+  { name: "首頁", href: "/" },
+  { name: "機型及收費", href: "/pricing" },
+  { name: machine.name, href: `/services/${machine.slug}` },
+];
+---
+
+<Base title={meta.title} description={meta.description} crumbs={crumbs} extraSchema={offersFor(machine)}>
+  <article class="wrap section">
+    <h1>{meta.h1}</h1>
+    <p class="answer">{meta.answer}</p>
+    <TypeCard machine={machine} linked={false} />
+    <p class="fine">{machine.where}。{machine.note}</p>
+    <div class="two-col">
+      <section class="panel">
+        <h2>包咩</h2>
+        <ul>
+          {washIncludes.map((item) => <li>{item}</li>)}
+        </ul>
+        <h3>洗 + 維修另加</h3>
+        <ul>
+          {repairIncludes.map((item) => <li>{item}</li>)}
+        </ul>
+      </section>
+      <section class="panel">
+        <h2>另外先報價先做</h2>
+        <ul>
+          {quotedSeparately.map((item) => <li>{item}</li>)}
+        </ul>
+        <p class="fine">完工保養 {site.warrantyDays} 日。最終以上門檢查為準。</p>
+      </section>
+    </div>
+    <h2>清洗步驟</h2>
+    <ol class="steps">
+      {cleanSteps.map((step, index) => (
+        <li><span class="num">{index + 1}</span><p>{step}</p></li>
+      ))}
+    </ol>
+    {related.length > 0 && (
+      <>
+        <h2>相關個案</h2>
+        <ul>
+          {related.map((item) => (
+            <li><a href={`/cases#case-${item.id}`}>{item.district}</a>：{item.body}</li>
+          ))}
+        </ul>
+      </>
+    )}
+    <p><a href="/faq">仲有問題？睇常見問題</a></p>
+    <h2>即時估價</h2>
+    <Estimate mode="compact" slug={machine.slug} />
+  </article>
+</Base>

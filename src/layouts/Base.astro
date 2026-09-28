@@ -1,0 +1,82 @@
+---
+import "../styles/global.css";
+import { site } from "../data/site.js";
+import { businessNode, breadcrumbNode, graph } from "../lib/schema.js";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import MobileBar from "../components/MobileBar.astro";
+import WaFab from "../components/WaFab.astro";
+
+const {
+  title,
+  description,
+  crumbs = [{ name: "首頁", href: "/" }],
+  extraSchema = [],
+} = Astro.props;
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const localPath = Astro.url.pathname === base ? "/" : base && Astro.url.pathname.startsWith(base + "/") ? Astro.url.pathname.slice(base.length) : Astro.url.pathname;
+const path = localPath === "/" ? "/" : localPath.replace(/\/$/, "");
+const canonical = path === "/" ? `${site.url}/` : `${site.url}${path}`;
+const schema = graph([businessNode(), breadcrumbNode(crumbs), ...extraSchema]);
+const json = JSON.stringify(schema).replace(/</g, "\\u003c");
+---
+
+<!doctype html>
+<html lang="zh-HK">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#0c6b73" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="zh_HK" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={site.name} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+HK:wght@400;500;700&display=swap" rel="stylesheet" />
+    <script is:inline>
+      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.documentElement.classList.add("js");
+      }
+    </script>
+    <script type="application/ld+json" set:html={json} />
+  </head>
+  <body>
+    <a class="skip" href="#main">跳到主要內容</a>
+    <Header path={path} />
+    {path !== "/" && <nav class="crumbs" aria-label="麵包屑">
+      <div class="wrap">
+        <ol>
+          {crumbs.map((crumb, index) => (
+            <li>
+              {index === crumbs.length - 1 ? (
+                <span aria-current="page">{crumb.name}</span>
+              ) : (
+                <a href={crumb.href}>{crumb.name}</a>
+              )}
+            </li>
+          ))}
+        </ol>
+      </div>
+    </nav>}
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <MobileBar />
+    <WaFab />
+    <script>
+      import { setupEstimates } from "../scripts/estimate.js";
+      import { setupMotion } from "../scripts/motion.js";
+      setupEstimates();
+      setupMotion();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,20 @@
+---
+import Base from "../layouts/Base.astro";
+import Estimate from "../components/Estimate.astro";
+import { pages, site } from "../data/site.js";
+
+const crumbs = [
+  { name: "首頁", href: "/" },
+  { name: "聯絡及預約", href: "/contact" },
+];
+---
+
+<Base title={pages.contact.title} description={pages.contact.description} crumbs={crumbs}>
+  <article class="wrap section">
+    <h1>{pages.contact.h1}</h1>
+    <p class="answer">{pages.contact.answer}</p>
+    <p>填好表格會打開 WhatsApp，訊息已經帶埋機型、數量同預計費用。發送之後，我哋先收到預約，並會喺辦公時間內同你確認上門時間。費用最終以上門檢查為準。</p>
+    <p>電話 <a href={`tel:${site.phoneTel}`}>{site.phoneDisplay}</a> · WhatsApp <a href={site.whatsapp}>{site.whatsappDisplay}</a> · {site.hours}</p>
+    <Estimate mode="full" />
+  </article>
+</Base>

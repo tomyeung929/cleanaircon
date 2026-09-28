@@ -1,0 +1,20 @@
+---
+import Base from "../layouts/Base.astro";
+
+const crumbs = [
+  { name: "首頁", href: "/" },
+  { name: "搵唔到頁面", href: "/404" },
+];
+---
+
+<Base title="搵唔到頁面｜香港專業洗冷氣" description="呢頁唔存在。可以返去洗冷氣收費、常見問題或者預約。" crumbs={crumbs}>
+  <article class="wrap section prose">
+    <h1>搵唔到呢一頁</h1>
+    <p class="answer">頁面可能已搬遷。洗冷氣收費、個案同預約都仲喺網站入面。</p>
+    <div class="actions">
+      <a class="btn btn-heat" href="/">返首頁</a>
+      <a class="btn btn-ghost" href="/pricing">睇收費</a>
+      <a class="btn btn-ghost" href="/contact">預約</a>
+    </div>
+  </article>
+</Base>

@@ -1,0 +1,65 @@
+---
+import Base from "../../layouts/Base.astro";
+import TypeCard from "../../components/TypeCard.astro";
+import { cleanSteps, machines, pages, site, visitSteps, washIncludes } from "../../data/site.js";
+
+const crumbs = [
+  { name: "首頁", href: "/" },
+  { name: "服務", href: "/services" },
+];
+---
+
+<Base title={pages.services.title} description={pages.services.description} crumbs={crumbs}>
+  <article class="wrap section prose">
+    <h1>{pages.services.h1}</h1>
+    <p class="answer">{pages.services.answer}</p>
+    <p>香港天氣潮濕，冷氣機用耐咗，隔塵網、散熱片同風輪好易積塵發霉，吹出嚟嘅風有異味，仲會唔夠凍、滴水同嘥電。師傅上門深層清洗，令冷氣機回復清新同製冷效能。</p>
+    <div class="actions">
+      <a class="btn btn-teal" href="/services/residential">住宅服務</a>
+      <a class="btn btn-ghost" href="/services/commercial">商業服務</a>
+    </div>
+  </article>
+
+  <section class="wrap section">
+    <h2>洗冷氣包括</h2>
+    <ul>
+      {washIncludes.map((item) => <li>{item}</li>)}
+    </ul>
+    <h2>洗 + 維修</h2>
+    <p>洗機同時檢查唔凍、滴水、異聲等問題。如需更換零件或者加雪種，師傅會先報價，你同意先開工。</p>
+  </section>
+
+  <section class="wrap section">
+    <h2>服務流程</h2>
+    <ol class="steps">
+      {visitSteps.map((step, index) => (
+        <li>
+          <span class="num">{index + 1}</span>
+          <div>
+            <h3>{step.title}</h3>
+            <p>{step.text}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="wrap section">
+    <h2>清洗步驟</h2>
+    <ol>
+      {cleanSteps.map((step) => <li>{step}</li>)}
+    </ol>
+    <p class="fine">完工保養 {site.warrantyDays} 日。</p>
+  </section>
+
+  <section class="wrap section">
+    <div class="section-head">
+      <h2>適用機型</h2>
+      <a href="/pricing">睇收費</a>
+    </div>
+    <p>共 10 款，由窗口機到天台組合式機組。撳入去睇每款機型嘅清洗服務詳情。</p>
+    <div class="type-grid">
+      {machines.map((machine) => <TypeCard machine={machine} />)}
+    </div>
+  </section>
+</Base>

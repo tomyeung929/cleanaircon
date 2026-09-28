@@ -1,0 +1,47 @@
+---
+import Base from "../layouts/Base.astro";
+import { casePhoto, caseRegions, cases, findMachine, hkd, pages } from "../data/site.js";
+
+const crumbs = [
+  { name: "首頁", href: "/" },
+  { name: "清洗個案", href: "/cases" },
+];
+---
+
+<Base title={pages.cases.title} description={pages.cases.description} crumbs={crumbs}>
+  <article class="wrap section">
+    <h1>{pages.cases.h1}</h1>
+    <p class="answer">{pages.cases.answer}</p>
+    <p>下面寫明機型同洗冷氣價錢，方便對照收費。</p>
+    {caseRegions.map((region) => (
+      <section class="region">
+        <h2>{region}</h2>
+        <div class="case-grid">
+          {cases.filter((item) => item.region === region).map((item) => {
+            const machine = findMachine(item.machine);
+            const index = cases.findIndex((entry) => entry.id === item.id);
+            return (
+              <article class="case" id={`case-${item.id}`}>
+                <div class="ba">
+                  <figure>
+                    <img src={casePhoto(index, "before")} alt={`${machine.name}清洗前示意圖`} width="640" height="480" />
+                    <figcaption>清洗前</figcaption>
+                  </figure>
+                  <figure>
+                    <img src={casePhoto(index, "after")} alt={`${machine.name}清洗後示意圖`} width="640" height="480" />
+                    <figcaption>清洗後</figcaption>
+                  </figure>
+                </div>
+                
+                <p class="case-price">{machine.name}<span>洗冷氣 {hkd(machine.washPrice)} 起</span></p>
+                <h3>{item.district}</h3>
+                <p>{item.body}</p>
+                <p><a href={`/services/${machine.slug}`}>睇{machine.key}詳情</a></p>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+    ))}
+  </article>
+</Base>

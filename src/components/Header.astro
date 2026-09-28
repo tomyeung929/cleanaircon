@@ -1,0 +1,51 @@
+---
+import { nav, site } from "../data/site.js";
+const { path } = Astro.props;
+
+function current(href) {
+  if (href === "/") return path === "/";
+  if (href === "/services") {
+    return path === "/services" || path === "/services/residential" || path === "/services/commercial";
+  }
+  return path === href || path.startsWith(`${href}/`);
+}
+---
+
+<div class="topbar">
+  <div class="wrap">
+    <span>營業時間 {site.hours}</span>
+    <span class="contact-pills">
+      <a href={`tel:${site.phoneTel}`}>{site.phoneDisplay}</a>
+      <a href={site.whatsapp}>WhatsApp {site.whatsappDisplay}</a>
+    </span>
+  </div>
+</div>
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="logo" href="/">
+      <img src={site.logo} alt="" width="40" height="40" />
+      <span>{site.name}<small>{site.nameEn}</small></span>
+    </a>
+    <input class="nav-toggle" id="nav-toggle" type="checkbox" aria-label="開關主選單" />
+    <label class="nav-burger" for="nav-toggle">選單</label>
+    <nav class="nav" aria-label="主選單">
+      {nav.filter((item) => ["/services", "/pricing", "/cases", "/about"].includes(item.href)).map((item) =>
+        item.children ? (
+          <details>
+            <summary>{item.label}</summary>
+            <ul>
+              {item.children.map((child) => (
+                <li><a href={child.href} aria-current={path === child.href ? "page" : undefined}>{child.label}</a></li>
+              ))}
+            </ul>
+          </details>
+        ) : (
+          <a href={item.href} aria-current={current(item.href) ? "page" : undefined}>{item.href === "/cases" ? "清洗示範" : item.label}</a>
+        )
+      )}
+    </nav>
+    <div class="header-cta">
+      <a class="btn btn-heat" href="/#book">即時計價 ↗</a>
+    </div>
+  </div>
+</header>

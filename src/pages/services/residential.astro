@@ -1,0 +1,34 @@
+---
+import Base from "../../layouts/Base.astro";
+import TypeCard from "../../components/TypeCard.astro";
+import { machines, pages, residentialPoints, site } from "../../data/site.js";
+
+const homeTypes = ["window-ac", "split-wall", "slim-split", "outdoor-unit"]
+  .map((slug) => machines.find((item) => item.slug === slug));
+
+const crumbs = [
+  { name: "首頁", href: "/" },
+  { name: "服務", href: "/services" },
+  { name: "住宅洗冷氣", href: "/services/residential" },
+];
+---
+
+<Base title={pages.residential.title} description={pages.residential.description} crumbs={crumbs}>
+  <article class="wrap section prose">
+    <h1>{pages.residential.h1}</h1>
+    <p class="answer">{pages.residential.answer}</p>
+    <p>屋苑、村屋、唐樓都有服務。開工前會用防水布包好牆身同傢俬，有小朋友或者寵物嘅家庭都可以放心。我哋用冷氣專用清潔劑，洗完用清水過清，並開機吹乾。</p>
+    <ul>
+      {residentialPoints.map((item) => <li>{item}</li>)}
+    </ul>
+    <p>常見住宅機包括窗口機、掛牆分體機同口琴機。室外機可以加購，只限安全到達嘅位置。</p>
+    <div class="type-grid home-types">
+      {homeTypes.map((machine) => <TypeCard machine={machine} />)}
+    </div>
+    <div class="actions">
+      <a class="btn btn-heat" href="/contact?type=split-wall&service=wash&qty=1">預約住宅洗機</a>
+      <a class="btn btn-ghost" href="/pricing">睇收費</a>
+    </div>
+    <p class="fine">{site.hours}。完工保養 {site.warrantyDays} 日，最終費用以上門檢查為準。</p>
+  </article>
+</Base>

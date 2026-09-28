@@ -1,0 +1,87 @@
+---
+import { contactHref, findMachine, hkd, machines, quote, serviceLabel, site, whatsappHref, bookingMessage } from "../data/site.js";
+
+const mode = Astro.props.mode ?? "full";
+const requested = Astro.props.slug || Astro.url.searchParams.get("type");
+const selected = findMachine(requested) ?? findMachine("split-wall");
+const service = Astro.url.searchParams.get("service") === "repair" ? "repair" : "wash";
+const qty = Math.max(1, Number(Astro.url.searchParams.get("qty")) || Number(Astro.props.qty) || 1);
+const priced = quote(selected, service, qty);
+const slim = machines.map(({ slug, name, washPrice, washRepairPrice }) => ({ slug, name, washPrice, washRepairPrice }));
+const waText = bookingMessage({
+  machineName: selected.name,
+  service,
+  qty: priced.qty,
+  total: priced.total,
+  discountEach: priced.discountEach,
+});
+---
+
+<form
+  class="panel book-layout"
+  data-estimate
+  data-mode={mode}
+  data-machines={JSON.stringify(slim)}
+  data-wa={site.whatsapp}
+>
+  <div class="fields">
+    {mode === "full" && (
+      <>
+        <label class="wide">姓名 *
+          <input data-name name="name" autocomplete="name" required placeholder="例如：陳大文" />
+        </label>
+        <label>聯絡電話 *
+          <input data-phone name="phone" inputmode="numeric" autocomplete="tel" minlength="8" maxlength="8" pattern="[0-9]{8}" title="請填 8 位香港電話號碼" required placeholder="例如：91234567" />
+        </label>
+        <label>方便日期（可選）
+          <input data-date name="date" type="date" />
+        </label>
+        <label class="wide">服務地址 *
+          <input data-address name="address" autocomplete="street-address" required placeholder="例如：九龍旺角彌敦道 123 號 8 樓" />
+        </label>
+      </>
+    )}
+    <label>冷氣機型 *
+      <select data-type name="type">
+        {machines.map((machine) => (
+          <option value={machine.slug} selected={machine.slug === selected.slug}>{machine.name}</option>
+        ))}
+      </select>
+    </label>
+    <label>服務類型 *
+      <select data-service name="service">
+        <option value="wash" selected={service === "wash"}>洗冷氣</option>
+        <option value="repair" selected={service === "repair"}>洗+維修</option>
+      </select>
+    </label>
+    <label>冷氣機數量 *
+      <input data-qty name="qty" type="number" min="1" max="50" value={priced.qty} required />
+    </label>
+    {mode === "full" && (
+      <div class="wide actions">
+        <button class="btn btn-heat" type="submit">用 WhatsApp 提交預約</button>
+      </div>
+    )}
+    <p class="form-error wide" data-error hidden></p>
+    <p class="form-status wide" data-status hidden></p>
+  </div>
+  <aside class="summary" aria-live="polite">
+    <p>預計費用</p>
+    <p class="price" data-total>{hkd(priced.total)}</p>
+    <p data-unit>單價 {hkd(priced.unit)}／部 · {serviceLabel(service)}</p>
+    <p data-discount hidden={priced.discountEach === 0}>
+      兩部或以上，每部減 {hkd(priced.discountEach)}，合共減 {hkd(priced.discountEach * priced.qty)}
+    </p>
+    <p>最終以上門檢查為準。完工保養 {site.warrantyDays} 日。</p>
+    <p class="quote-note">大匹數、偏遠地區、高空或搭棚等額外費用，會先評估再報價。維修零件及雪種另計。</p>
+    <p class="quote-note">WhatsApp 發送後仍需確認上門日期，未代表預約成功。</p>
+    {mode === "compact" ? (
+      <div class="actions">
+        <a class="btn btn-heat" data-contact href={contactHref({ slug: selected.slug, service, qty: priced.qty })}>填資料預約</a>
+        <a class="btn btn-wa" data-wa-link href={whatsappHref(waText)}>WhatsApp 查詢呢個報價</a>
+      </div>
+    ) : (
+      <a data-wa-link href={whatsappHref(waText)} hidden>如果未彈出 WhatsApp，撳呢度發送</a>
+    )}
+  </aside>
+</form>

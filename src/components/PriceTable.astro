@@ -1,0 +1,27 @@
+---
+import { hkd, machines } from "../data/site.js";
+---
+
+<div class="table-wrap">
+  <table>
+    <caption>2026 年洗冷氣收費（每部，港幣）</caption>
+    <thead>
+      <tr>
+        <th scope="col">機型</th>
+        <th scope="col">常見地方</th>
+        <th scope="col">洗冷氣</th>
+        <th scope="col">洗+維修</th>
+      </tr>
+    </thead>
+    <tbody>
+      {machines.map((machine) => (
+        <tr>
+          <th scope="row"><a href={`/services/${machine.slug}`}>{machine.name}</a></th>
+          <td>{machine.where}</td>
+          <td><strong>{hkd(machine.washPrice)} 起</strong></td>
+          <td><strong>{hkd(machine.washRepairPrice)} 起</strong></td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>

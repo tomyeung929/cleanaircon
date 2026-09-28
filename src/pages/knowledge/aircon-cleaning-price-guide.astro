@@ -1,0 +1,61 @@
+---
+import Base from "../../layouts/Base.astro";
+import PriceTable from "../../components/PriceTable.astro";
+import { articleFaqs, pages, priceFactors, quoteQuestions, saveTips, site, whyPhotos } from "../../data/site.js";
+import { articleNode } from "../../lib/schema.js";
+
+const crumbs = [
+  { name: "首頁", href: "/" },
+  { name: "冷氣知識", href: "/knowledge" },
+  { name: "洗冷氣價錢指南 2026", href: "/knowledge/aircon-cleaning-price-guide" },
+];
+---
+
+<Base title={pages.article.title} description={pages.article.description} crumbs={crumbs} extraSchema={[articleNode()]}>
+  <article class="wrap section prose">
+    <p class="eyebrow">冷氣知識</p>
+    <h1>{pages.article.h1}</h1>
+    <p class="answer">{pages.article.answer}</p>
+    <p><time datetime={site.updated}>2026年9月26日更新</time></p>
+    <p>搵人洗冷氣，最多人問：「洗一部要幾錢？」其實價錢主要睇機型，再加埋數量、位置同機況。以下係{site.name}嘅明碼收費，同埋比較報價時要留意嘅位。</p>
+
+    <details class="dust-guide">
+      <summary>冷氣入面邊啲位置容易積塵？</summary>
+      <p>以下係其他地區相機影到嘅真實積塵，只標明相入面睇到嘅部件。</p>
+      <div class="why-grid">{whyPhotos.map((photo) => <article class="panel why-card"><img src={photo.image} alt={photo.label} width="640" height="480" loading="lazy" /><h3>{photo.label}</h3></article>)}</div>
+    </details>
+    <h2>2026 洗冷氣價錢一覽（每部）</h2>
+    <PriceTable />
+    <p>以上係洗冷氣價；洗 + 維修會按實際零件同工序另外報價，開工前講清楚。風喉機同天台組合式標明「起」，因為要睇現場。</p>
+    <p>市場參考：香港公開報價大致由每部約 HK$500 到 HK$1,600 不等，機型愈複雜、拆裝愈多，收費愈高。天台大型機組會高過呢個範圍。</p>
+
+    <h2>影響洗冷氣價錢嘅 5 個因素</h2>
+    <ol>
+      {priceFactors.map((item) => <li><strong>{item.title}</strong>：{item.text}</li>)}
+    </ol>
+
+    <h2>報價前要問清楚</h2>
+    <ul>
+      {quoteQuestions.map((item) => <li>{item}</li>)}
+    </ul>
+    <p>{site.name}的答案：室外機可加購 HK$200；洗冷氣包通去水同除霉消毒；洗完會試機，並有 {site.warrantyDays} 日保養。到場後如果機況同預約唔同，會先講額外收費，你同意先做。</p>
+
+    <h2>點樣慳錢？</h2>
+    <ul>
+      {saveTips.map((item) => <li><strong>{item.title}</strong>：{item.text}</li>)}
+    </ul>
+
+    <h2>幾耐洗一次？</h2>
+    <p>一般家庭建議每年一次；如果屋企有小朋友、長者、寵物或者鼻敏感人士，又或者日日開冷氣，建議 6–9 個月一次。</p>
+
+    <h2>常見問題</h2>
+    {articleFaqs.map((item) => (
+      <section>
+        <h3>{item.q}</h3>
+        <p>{item.a}</p>
+        {item.href && <p><a href={item.href}>{item.linkLabel}</a></p>}
+      </section>
+    ))}
+    <p>想睇實際情況，可以參考<a href="/cases">清洗個案</a>；想了解服務內容，睇<a href="/services">洗冷氣服務</a>。</p>
+  </article>
+</Base>

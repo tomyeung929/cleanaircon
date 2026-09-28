@@ -1,0 +1,43 @@
+---
+import { site } from "../data/site.js";
+---
+
+<footer class="site-footer">
+  <div class="wrap footer-grid">
+    <div>
+      <strong>{site.name}</strong>
+      <p>{site.nameEn}</p>
+      <p>專業上門洗冷氣同維修，住宅、寫字樓、商舖都搞掂。</p>
+    </div>
+    <div>
+      <h2>服務</h2>
+      <ul>
+        <li><a href="/services">洗冷氣</a></li>
+        <li><a href="/services/residential">住宅洗冷氣</a></li>
+        <li><a href="/services/commercial">商業洗冷氣</a></li>
+        <li><a href="/pricing">10 款機型收費</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>資料</h2>
+      <ul>
+        <li><a href="/cases">清洗示範</a></li>
+        <li><a href="/knowledge">冷氣知識</a></li>
+        <li><a href="/knowledge/aircon-cleaning-price-guide">洗冷氣價錢指南 2026</a></li>
+        <li><a href="/faq">常見問題</a></li>
+        <li><a href="/about">關於我們</a></li>
+        <li><a href="/contact">聯絡及預約</a></li>
+      </ul>
+    </div>
+    <address>
+      <h2>聯絡我哋</h2>
+      <p><a href={`tel:${site.phoneTel}`}>{site.phoneDisplay}</a></p>
+      <p><a href={site.whatsapp}>WhatsApp {site.whatsappDisplay}</a></p>
+      <p>全港 18 區上門服務</p>
+      <p>{site.hours}</p>
+    </address>
+  </div>
+  <div class="wrap">
+    <p class="copy">© 2026 {site.name} {site.nameEn} 版權所有</p>
+  </div>
+</footer>

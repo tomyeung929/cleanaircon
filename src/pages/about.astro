@@ -1,0 +1,35 @@
+---
+import Base from "../layouts/Base.astro";
+import { pages, promises, site } from "../data/site.js";
+
+const crumbs = [
+  { name: "首頁", href: "/" },
+  { name: "關於我們", href: "/about" },
+];
+---
+
+<Base title={pages.about.title} description={pages.about.description} crumbs={crumbs}>
+  <article class="wrap section prose">
+    <h1>{pages.about.h1}</h1>
+    <p class="answer">{pages.about.answer}</p>
+    <p>香港天氣濕熱，冷氣差唔多全年都要用。冷氣用耐咗，冷排同風輪會積塵同生霉，唔單止冷氣唔凍，仲會耗電同影響健康。我哋嘅宗旨係用合理價錢，幫每個家庭同公司保持冷氣乾淨、慳電、耐用。</p>
+    <p>由預約、報價到上門清洗，我哋每一步都清楚交代。完工 {site.warrantyDays} 日內，清洗引起嘅滴水同異味免費跟進。零件同雪種另行報價。專注香港上門洗冷氣同維修服務。</p>
+    <h2>你見到嘅承諾</h2>
+    <ul>
+      {promises.map((item) => <li><strong>{item.title}</strong>：{item.text}</li>)}
+    </ul>
+    <ul>
+      <li><strong>經驗師傅</strong>：師傅熟悉住宅同商用冷氣，拆裝小心。</li>
+      <li><strong>明碼實價</strong>：網站價係標準機，先報價後開工。周末、偏遠、搭棚同大匹數會預約時講明。</li>
+      <li><strong>慳電環保</strong>：清潔後冷氣效率提升，慳返電費，亦減少碳排放。</li>
+    </ul>
+    <h2>服務範圍同時間</h2>
+    <p>服務範圍：{site.area}。</p>
+    <p>營業時間：{site.hours}。</p>
+    <p>電話：<a href={`tel:${site.phoneTel}`}>{site.phoneDisplay}</a>。WhatsApp：<a href={site.whatsapp}>{site.whatsappDisplay}</a>。</p>
+    <div class="actions">
+      <a class="btn btn-heat" href="/contact">聯絡及預約</a>
+      <a class="btn btn-ghost" href="/pricing">睇收費</a>
+    </div>
+  </article>
+</Base>

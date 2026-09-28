@@ -1,0 +1,25 @@
+---
+import { hkd } from "../data/site.js";
+
+const { machine, linked = true } = Astro.props;
+---
+
+{linked ? (
+  <a class="type-card" href={`/services/${machine.slug}`}>
+    <img src={machine.image} alt={`${machine.name}，洗冷氣 ${hkd(machine.washPrice)} 起`} width="640" height="480" loading="lazy" />
+    <span class="type-caption">
+      <span class="type-name">{machine.name}</span>
+      <span class="type-price">洗冷氣 <strong>{hkd(machine.washPrice)} 起</strong></span>
+      <span class="type-sub">洗+維修 {hkd(machine.washRepairPrice)} 起</span>
+    </span>
+  </a>
+) : (
+  <figure class="type-card">
+    <img src={machine.image} alt={`${machine.name}，洗冷氣 ${hkd(machine.washPrice)} 起`} width="640" height="480" />
+    <figcaption class="type-caption">
+      <span class="type-name">{machine.name}</span>
+      <span class="type-price">洗冷氣 <strong>{hkd(machine.washPrice)} 起</strong></span>
+      <span class="type-sub">洗+維修 {hkd(machine.washRepairPrice)} 起</span>
+    </figcaption>
+  </figure>
+)}

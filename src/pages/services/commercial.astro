@@ -1,0 +1,32 @@
+---
+import Base from "../../layouts/Base.astro";
+import TypeCard from "../../components/TypeCard.astro";
+import { commercialPoints, machines, pages } from "../../data/site.js";
+
+const commercialSlugs = ["ceiling-cassette", "fcu", "vrv", "ducted", "rooftop", "floor-standing"];
+const list = machines.filter((item) => commercialSlugs.includes(item.slug));
+const crumbs = [
+  { name: "首頁", href: "/" },
+  { name: "服務", href: "/services" },
+  { name: "商業洗冷氣", href: "/services/commercial" },
+];
+---
+
+<Base title={pages.commercial.title} description={pages.commercial.description} crumbs={crumbs}>
+  <article class="wrap section">
+    <div class="prose">
+      <h1>{pages.commercial.h1}</h1>
+      <p class="answer">{pages.commercial.answer}</p>
+      <p>寫字樓、商舖、食肆、學校：天花機、FCU、VRV、風喉機、天台組合式都做得，可以安排非辦公時間施工，減少影響營業。</p>
+      <ul>
+        {commercialPoints.map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+    <div class="type-grid stack">
+      {list.map((machine) => <TypeCard machine={machine} />)}
+    </div>
+    <div class="actions">
+      <a class="btn btn-heat" href="/contact?type=ceiling-cassette&service=wash&qty=1">預約商業清洗</a>
+    </div>
+  </article>
+</Base>

@@ -1,0 +1,27 @@
+---
+import Base from "../../layouts/Base.astro";
+import { pages, quoteQuestions, site } from "../../data/site.js";
+
+const crumbs = [
+  { name: "首頁", href: "/" },
+  { name: "冷氣知識", href: "/knowledge" },
+];
+---
+
+<Base title={pages.knowledge.title} description={pages.knowledge.description} crumbs={crumbs}>
+  <article class="wrap section prose">
+    <h1>{pages.knowledge.h1}</h1>
+    <p class="answer">{pages.knowledge.answer}</p>
+    <p>洗冷氣、保養同慳電小貼士。收費同保養日數同網站其他頁一致，完工保養 {site.warrantyDays} 日。</p>
+    <article class="panel">
+      <p class="eyebrow">冷氣知識</p>
+      <h2><a href="/knowledge/aircon-cleaning-price-guide">{pages.article.h1}</a></h2>
+      <p>{pages.article.answer}</p>
+      <p>影響價錢嘅因素包括機型、匹數、室外機位置、機況、地點同樓層。報價前值得問：</p>
+      <ul>
+        {quoteQuestions.map((item) => <li>{item}</li>)}
+      </ul>
+      <a href="/knowledge/aircon-cleaning-price-guide">閱讀全文</a>
+    </article>
+  </article>
+</Base>
